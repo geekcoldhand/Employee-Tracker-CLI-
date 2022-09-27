@@ -7,10 +7,10 @@ const db = mysql.createConnection(
   {
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "helloDBCooper",
     database: "company_db",
   },
-  console.log(`Connected to ${database} database.`)
+  console.log(`Connected to database.`)
 );
 
 db.connect((error) => {
@@ -29,13 +29,13 @@ function systemStart() {
       {
         name: "viewAddUpdate",
         type: "list",
-        choices: ["View ", "Add", "Update", "Quit"],
+        choices: ["View", "Add", "Update", "Quit"],
         message: "What would you like to do?",
       },
     ])
     .then((data) => {
-      // View all data
-      if (data.ViewAddUpdate === "View") {
+      // User want to View all data
+      if (data.viewAddUpdate === "View") {
         inquirer
           .prompt([
             {
@@ -47,14 +47,16 @@ function systemStart() {
           ])
           .then((view) => {
             //User wants to view roles
-            inquirer.prompt([]);
+            viewRoles();
             //User wants to view departments
+            viewDepartments();
             //User wants to view employees
+            viewEmployees();
           });
       }
 
-      // Add all data
-      if (data.ViewAddUpdate === "Add") {
+      // User wants to Add all data
+      if (data.viewAddUpdate === "Add") {
         inquirer
           .prompt([
             {
@@ -65,14 +67,20 @@ function systemStart() {
             },
           ])
           .then((add) => {
-            //User wants to add roles
-            //User wants to add departments
-            //User wants to add employees
+            if (add.addList === "Roles")
+              //User wants to add roles
+              addRoles();
+            if (add.addList === "Departments")
+              //User wants to add departments
+              addDepartments();
+            if (add.addList === "Employees")
+              //User wants to add employees
+              addEmployees();
           });
       }
 
-      // update all data
-      if (data.ViewAddUpdate === "Update") {
+      // User wants to update all data
+      if (data.viewAddUpdate === "Update") {
         inquirer
           .prompt([
             {
@@ -84,12 +92,45 @@ function systemStart() {
           ])
           .then((update) => {
             //User wants to update roles
+            updateRoles();
             //User wants to update departments
+            updateDepartments();
             //User wants to update employees
+            updateEmployees();
           });
       }
       // quit program
       if (data.ViewAddUpdate === "Quit") {
+        console.log("///////////////");
+        console.log("CONNECTION ENED");
+        console.log("///////////////");
+        db.end();
       }
     });
 }
+
+function viewEmployees() {
+  // get all columns from  employees tables
+  db.query("SELECT * FROM employee", (err, res) => console.table(res));
+}
+
+function viewRoles() {
+  // get all columns from roles tables
+}
+function viewDepartments() {
+  // get all departments from roles tables
+}
+
+function addRoles() {
+  // get id, title dep and salary
+}
+function addDepartments() {
+  // get id, name
+}
+function addEmployees() {
+  // get id, name, l.name, title, dep., salary, manager
+}
+
+function updateRoles() {}
+function updateDepartments() {}
+function updateEmployees() {}
