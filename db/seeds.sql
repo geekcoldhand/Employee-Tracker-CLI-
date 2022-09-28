@@ -1,12 +1,18 @@
-INSERT INTO department (id, name)
-VALUES(1,Managment),
-(2,Production)
-(3,Marketing)
-INSERT INTO roles (id,title, salary, department_id )
-VALUES(1, Manager, Managment)
-(2, Engineer, Production)
-(3, Marketer, Marketing)
-INSERT INTO employee ( id, first_name, last_name, role_id)
-VALUES(1, Horatious, Harris,1 )
-(2, Johnny, Appleseed, 3)
-(3, Zacko, Moondou, 2)
+INSERT INTO department (name)
+VALUES('Managment'),
+('Production')
+('Marketing')
+('Human Resources')
+
+
+INSERT INTO roles (title, salary, department_id )
+VALUES('Manager', 120000, 1)
+('Engineer', 160000, 2)
+('Marketer', 60000, 3)
+('HR Manager', 85000, 4),
+('HR Associate', 60000, 4);
+
+INSERT INTO employee ( first_name, last_name, role_id)
+VALUES( 'Horatious', 'Harris',1 )
+('Johnny', 'Appleseed', 3)
+( 'Zacko', 'Moondou', 2)

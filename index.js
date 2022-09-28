@@ -47,11 +47,11 @@ function systemStart() {
           ])
           .then((view) => {
             //User wants to view roles
-            viewRoles();
+            if (view.viewList === "Roles") viewRoles();
             //User wants to view departments
-            viewDepartments();
+            if (view.viewList === "Departments") viewDepartments();
             //User wants to view employees
-            viewEmployees();
+            if (view.viewList === "Employee") viewEmployees();
           });
       }
 
@@ -73,7 +73,7 @@ function systemStart() {
             if (add.addList === "Departments")
               //User wants to add departments
               addDepartments();
-            if (add.addList === "Employees")
+            if (add.addList === "Employee")
               //User wants to add employees
               addEmployees();
           });
@@ -111,7 +111,16 @@ function systemStart() {
 
 function viewEmployees() {
   // get all columns from  employees tables
-  db.query("SELECT * FROM employee", (err, res) => console.table(res));
+  console.log("zzzzeynopw");
+
+  db.query(
+    "SELECT employee.first_name FROM company_db.employee",
+    function (err, res) {
+      if (err) console.error(err);
+      console.table(res);
+    }
+  );
+  console.log("heynopw");
 }
 
 function viewRoles() {

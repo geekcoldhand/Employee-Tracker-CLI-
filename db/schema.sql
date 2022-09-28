@@ -5,9 +5,8 @@ USE company_db;
 
 -- table 1
 CREATE TABLE department (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     name VARCHAR(30) NOT NULL
-
 );
 -- table 2
 CREATE TABLE roles (
