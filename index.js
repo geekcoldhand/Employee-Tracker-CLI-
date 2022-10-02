@@ -2,7 +2,7 @@ const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const consoleTable = require("console.table");
 
-// Connect to database using host user pw and database
+// construct database obj using host user pw and database
 const db = mysql.createConnection(
   {
     host: "localhost",
@@ -13,6 +13,7 @@ const db = mysql.createConnection(
   console.log(`Connected to database.`)
 );
 
+// connect to db using the connnect method
 db.connect((error) => {
   if (error) console.error(error);
 
@@ -69,7 +70,30 @@ function systemStart() {
           .then((add) => {
             if (add.addList === "Roles")
               //User wants to add roles
-              addRoles();
+              inquirer
+                .prompt([
+                  {
+                    name: "title",
+                    type: "list",
+                    choices: ["Employee", "Roles", "Departments"],
+                    message: "Whats the title?",
+                  },
+                  {
+                    name: "salary",
+                    type: "input",
+                    message: "What salary would you like to add?",
+                  },
+                  {
+                    name: "department",
+                    type: "list",
+                    choices: ["Employee", "Roles", "Departments", "Quit"],
+                    message: "What department does this belong to?",
+                  },
+                ])
+                .then((answer) =>
+                  addRoles([answer.title, answer.salary, answer.department])
+                );
+
             if (add.addList === "Departments")
               //User wants to add departments
               addDepartments();
@@ -91,12 +115,15 @@ function systemStart() {
             },
           ])
           .then((update) => {
-            //User wants to update roles
-            updateRoles();
-            //User wants to update departments
-            updateDepartments();
-            //User wants to update employees
-            updateEmployees();
+            if (update.updateList === "Roles")
+              //User wants to update roles
+              updateRoles();
+            if (update.updateList === "Departments")
+              //User wants to update departments
+              updateDepartments();
+            if (update.updateList === "Employee")
+              //User wants to update employees
+              updateEmployees();
           });
       }
       // quit program
@@ -111,35 +138,91 @@ function systemStart() {
 
 function viewEmployees() {
   // get all columns from  employees tables
-  console.log("zzzzeynopw");
-
-  db.query(
-    "SELECT employee.first_name FROM company_db.employee",
-    function (err, res) {
-      if (err) console.error(err);
-      console.table(res);
-    }
-  );
-  console.log("heynopw");
+  db.query("SELECT * FROM employee", function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
 }
-
 function viewRoles() {
   // get all columns from roles tables
+  db.query("SELECT * FROM roles", function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
 }
 function viewDepartments() {
   // get all departments from roles tables
+  db.query("SELECT * FROM department", function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
 }
 
-function addRoles() {
+function addRoles(newRole) {
   // get id, title dep and salary
+  sql = `INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`;
+
+  db.query(sql, newRole, function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
 }
-function addDepartments() {
+function addDepartments(newDep) {
   // get id, name
+  sql = `INSERT INTO departments (name) VALUES (?)`;
+  db.query(sql, newDep, function (err, res) {
+    if (err) console.error(err);
+    console.clear();
+    console.table(res);
+    console.log("New department added!");
+  });
 }
-function addEmployees() {
+function addEmployees(newEmploy) {
   // get id, name, l.name, title, dep., salary, manager
+  sql = `INSERT INTO employee (first_name, last_name, title, department, salary, manager) VALUES (?,?,?,?,?,?)`;
+  db.query(sql, newEmploy, function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
 }
 
-function updateRoles() {}
-function updateDepartments() {}
-function updateEmployees() {}
+function updateRoles(role_id) {
+  sql = `INSERT INTO roles WHERE id = ${role_id}`;
+  db.query(sql, function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
+}
+function updateDepartments(dep_id) {
+  sql = `INSERT INTO roles WHERE id = ${dep_id}`;
+  db.query(sql, function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
+}
+function updateEmployees(emp_id) {
+  sql = `INSERT INTO roles WHERE id = ${emp_id}`;
+  db.query(sql, function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
+}
+
+function deleteRoles(curr_id) {
+  db.query(`DELETE FROM roles WHERE id = ${curr_id}`, function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
+}
+function deleteDepartments(curr_id) {
+  db.query(`DELETE FROM roles WHERE id = ${curr_id}`, function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
+}
+function deleteEmployee(curr_id) {
+  db.query(`DELETE FROM roles WHERE id = ${curr_id}`, function (err, res) {
+    if (err) console.error(err);
+    console.table(res);
+  });
+}
