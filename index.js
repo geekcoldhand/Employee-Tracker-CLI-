@@ -24,6 +24,7 @@ db.connect((error) => {
   systemStart();
 });
 
+// root function startSystem to branch user chioces View, Add, and Update
 function systemStart() {
   inquirer
     .prompt([
@@ -35,7 +36,7 @@ function systemStart() {
       },
     ])
     .then((data) => {
-      // User want to View all data
+      // User want to View data
       if (data.viewAddUpdate === "View") {
         inquirer
           .prompt([
@@ -53,6 +54,11 @@ function systemStart() {
             if (view.viewList === "Departments") viewDepartments();
             //User wants to view employees
             if (view.viewList === "Employee") viewEmployees();
+            //
+            else {
+              console.log("Bye");
+              return;
+            }
           });
       }
 
@@ -87,7 +93,7 @@ function systemStart() {
                     name: "department",
                     type: "list",
                     choices: ["Employee", "Roles", "Departments", "Quit"],
-                    message: "What department does this belong to?",
+                    message: "Enter the number the department belongs to?",
                   },
                 ])
                 .then((answer) =>
@@ -136,10 +142,45 @@ function systemStart() {
     });
 }
 
+function getEmployees() {
+  db.query("SELECT * FROM employee", function (err, res) {
+    if (err) console.error(err);
+    let employeesArray = [];
+
+    res.forEach((employees) => {
+      departmentArray.push(employeesArray.name);
+    });
+    return employeesArray;
+  });
+}
+function getDepartments() {
+  db.query("SELECT * FROM departments", function (err, res) {
+    if (err) console.error(err);
+    let departmentArray = [];
+
+    res.forEach((departments) => {
+      departmentArray.push(departments.name);
+    });
+    return departmentArray;
+  });
+}
+function getRoles() {
+  db.query("SELECT * FROM roles", function (err, res) {
+    if (err) console.error(err);
+    let rolesArray = [];
+
+    res.forEach((role) => {
+      rolesArray.push(role.title);
+    });
+    return rolesArray;
+  });
+}
+
 function viewEmployees() {
   // get all columns from  employees tables
   db.query("SELECT * FROM employee", function (err, res) {
     if (err) console.error(err);
+
     console.table(res);
   });
 }

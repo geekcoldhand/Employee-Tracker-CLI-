@@ -14,7 +14,7 @@ VALUES('Manager', 120000),
 ('HR Manager', 85000),
 ('HR Associate', 60000);
 
-INSERT INTO Employee (first_name, last_name)
-VALUES( 'Horatious', 'Harris'),
-('Johnny', 'Appleseed'),
-( 'Zacko', 'Moondou');
+INSERT INTO Employee (first_name, last_name, role_id)
+VALUES( 'Horatious', 'Harris', 2),
+('Johnny', 'Appleseed', 3),
+( 'Zacko', 'Moondou', 5);
